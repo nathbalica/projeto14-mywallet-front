@@ -45,7 +45,6 @@ export default function HomePage() {
       apis.deleteTransaction(transactionId, userAuth.token)
         .then((res) => {
           handleGetTransactions();
-          navigate("/")
         })
         .catch((err) => {
           alert(err.response.data);
@@ -56,6 +55,12 @@ export default function HomePage() {
   useEffect(() => {
     handleGetTransactions()
   }, [])
+
+  useEffect(() => {
+    if (!userAuth) {
+      navigate("/");
+    }
+  }, [userAuth, navigate]);
 
   if (transactions === null) {
     return <h1>Carregando...</h1>;
