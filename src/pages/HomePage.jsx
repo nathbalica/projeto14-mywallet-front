@@ -6,7 +6,7 @@ import useAuth from "../hooks/auth"
 import { useState } from "react"
 import { useEffect } from "react"
 import dayjs from "dayjs"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export default function HomePage() {
   const [transactions, setTransactions] = useState(null)
@@ -45,6 +45,7 @@ export default function HomePage() {
       apis.deleteTransaction(transactionId, userAuth.token)
         .then((res) => {
           handleGetTransactions();
+          navigate("/")
         })
         .catch((err) => {
           alert(err.response.data);
