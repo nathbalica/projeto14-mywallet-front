@@ -30,7 +30,6 @@ export default function TransactionsPage() {
         alert(err.response.data)
       )
 
-
   }
   return (
     <TransactionsContainer>

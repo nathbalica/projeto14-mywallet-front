@@ -60,13 +60,13 @@ export default function HomePage() {
     return <h1>Carregando...</h1>;
   }
 
-  const totalBalance = transactions.reduce((sum, transaction) => {
+  const totalBalance = parseFloat(transactions.reduce((sum, transaction) => {
     if (transaction.type === "profit") {
       return sum + transaction.value;
     } else {
       return sum - Math.abs(transaction.value);
     }
-  }, 0);
+  }, 0).toFixed(2));
 
   const balanceColor = totalBalance >= 0 ? "positivo" : "negativo";
 
@@ -102,8 +102,8 @@ export default function HomePage() {
                     color={transaction.type === "profit" ? "positivo" : "negativo"}
                   >
                     {transaction.value.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
                     })}
                   </Value>
                   <DeleteButton
