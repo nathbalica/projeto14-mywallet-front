@@ -16,6 +16,12 @@ function signUp(body) {
     return promise;
 }
 
+function logout(token){
+    const config = configToken(token);
+    const promise = axios.post(`${import.meta.env.VITE_API_URL}/logout`, {}, config)
+    return promise;
+}
+
 
 function getTransaction(token) {
     const config = configToken(token)
@@ -24,52 +30,41 @@ function getTransaction(token) {
     return promise;
 }
 
-// function listHabits(token) {
-//     const config = configToken(token)
-//     const req = axios.get(`${BASE_URL}/habits`, config)
+function createTransaction(body, token) {
+    const config = configToken(token)
+    const promise = axios.post(`${import.meta.env.VITE_API_URL}/transactions`, body, config)
 
-//     return req;
-// }
+    return promise;
+}
 
-// function lisHabitsToday(token) {
-//     const config = configToken(token)
-//     const req = axios.get(`${BASE_URL}/habits/today`, config)
+function deleteTransaction(transactionId, token){
+    const config = configToken(token)
+    const promise = axios.delete(`${import.meta.env.VITE_API_URL}/transactions/${transactionId}`, config)
 
-//     return req;
-// }
+    return promise;
+}
 
-// function checkEnable(habitId, token) {
-//     const config = configToken(token);
-//     const req = axios.post(
-//         `${BASE_URL}/habits/${habitId}/check`,
-//         {},
-//         config
-//     );
+function updateTransaction(transactionId, token, body) {
+    const config = configToken(token);
+    const promise = axios.put(
+      `${import.meta.env.VITE_API_URL}/transactions/${transactionId}`,
+      body,
+      config
+    );
+  
+    return promise;
+  }
 
-//     return req;
-// }
 
-// function checkDisable(habitId, token) {
-//     const config = configToken(token);
-//     const req = axios.post(
-//         `${BASE_URL}/habits/${habitId}/uncheck`,
-//         {},
-//         config
-//     );
-
-//     return req;
-// }
-
-// function getHistory(token) {
-//     const config = configToken(token)
-//     const req = axios.get(`${BASE_URL}/habits/history/daily`, config)
-//     return req;
-// }
 
 const apis = {
     login,
     signUp,
-    getTransaction
+    logout,
+    getTransaction,
+    createTransaction,
+    deleteTransaction,
+    updateTransaction
 }
 
 export default apis;

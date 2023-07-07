@@ -6,12 +6,13 @@ import useAuth from "../hooks/auth"
 import { useState } from "react"
 import { useEffect } from "react"
 import dayjs from "dayjs"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 
 export default function HomePage() {
   const [transactions, setTransactions] = useState(null)
-  const { userAuth } = useAuth();
+  const { userAuth, login } = useAuth();
   const navigate = useNavigate()
+  const location = useLocation();
 
   console.log(userAuth.token)
 
@@ -26,9 +27,34 @@ export default function HomePage() {
       })
   }
 
+  function handleLogout() {
+    apis.logout(userAuth.token)
+      .then(res => {
+        localStorage.removeItem("userAuth");
+        login(null);
+        navigate("/")
+      })
+      .catch((err) => {
+        alert(err.response.data)
+      })
+  }
+
+  function handleDeleteTransaction(transactionId) {
+    const confirmed = window.confirm("Deseja excluir este registro?");
+    if (confirmed) {
+      apis.deleteTransaction(transactionId, userAuth.token)
+        .then((res) => {
+          handleGetTransactions();
+        })
+        .catch((err) => {
+          alert(err.response.data);
+        });
+    }
+  }
+
   useEffect(() => {
     handleGetTransactions()
-}, [])
+  }, [])
 
   if (transactions === null) {
     return <h1>Carregando...</h1>;
@@ -48,8 +74,8 @@ export default function HomePage() {
     <HomeContainer>
 
       <Header>
-        <h1>Olá, {userAuth.userName}</h1>
-        <BiExit />
+        <h1 data-test="user-name">Olá, {userAuth.userName}</h1>
+        <BiExit data-test="logout" onClick={handleLogout} />
       </Header>
       {transactions.length === 0 ? (
         <CenteredTransactionsContainer>
@@ -62,21 +88,38 @@ export default function HomePage() {
               <ListItemContainer key={transaction._id}>
                 <div>
                   <span>{dayjs(transaction.date).format('DD/MM')}</span>
-                  <strong>{transaction.description}</strong>
+                  <strong
+                    onClick={() => navigate(`/editar-transacao/${transaction.type}`, { state: transaction })}
+                    data-test="registry-name"
+                  >
+                    {transaction.description}
+                  </strong>
                 </div>
-                <Value color={transaction.type === "profit" ? "positivo" : "negativo"}>
-                  {transaction.value.toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                </Value>
+                <div>
+
+                  <Value
+                    data-test="registry-amount"
+                    color={transaction.type === "profit" ? "positivo" : "negativo"}
+                  >
+                    {transaction.value.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </Value>
+                  <DeleteButton
+                    data-test="registry-delete"
+                    onClick={() => handleDeleteTransaction(transaction._id)}
+                  >
+                    x
+                  </DeleteButton>
+                </div>
               </ListItemContainer>
             ))}
           </ul>
 
           <article>
             <strong>Saldo</strong>
-            <Value color={balanceColor}>
+            <Value data-test="total-amount" color={balanceColor}>
               {totalBalance.toLocaleString("pt-BR", {
                 style: "currency",
                 currency: "BRL",
@@ -89,12 +132,18 @@ export default function HomePage() {
 
       <ButtonsContainer>
 
-        <button onClick={() => navigate("/nova-transacao/entrada")}>
+        <button
+          data-test="new-income"
+          onClick={() => navigate("/nova-transacao/entrada")}
+        >
           <AiOutlinePlusCircle />
           <p>Nova <br /> entrada</p>
         </button>
-      
-        <button onClick={() => navigate("/nova-transacao/saida")}>
+
+        <button
+          data-test="new-expense"
+          onClick={() => navigate("/nova-transacao/saida")}
+        >
           <AiOutlineMinusCircle />
           <p>Nova <br />saída</p>
         </button>
@@ -128,6 +177,15 @@ const TransactionsContainer = styled.article`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  ul {
+    max-height: 350px; /* Defina uma altura máxima para a lista */
+    overflow-y: auto; /* Adicione rolagem quando necessário */
+    scrollbar-width: none;
+    ::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+    }
+  }
 
   article {
     display: flex;
@@ -175,19 +233,39 @@ const Value = styled.div`
   font-size: 16px;
   text-align: right;
   color: ${(props) => (props.color === "positivo" ? "green" : "red")};
+
 `
 const ListItemContainer = styled.li`
+  font-size: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
   color: #000000;
   margin-right: 10px;
+  div {
+    display: flex;
+    align-items: center;
+  }
+
   div span {
     color: #c6c6c6;
     margin-right: 10px;
   }
 `
+
+const DeleteButton = styled.button`
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  width: 5px;
+  color: #C6C6C6;
+  margin-right: 0;
+  flex-shrink: 0;
+  padding-right: 0;
+
+  cursor: pointer;
+`;
 
 export const Legend = styled.p`
     font-size: 18px;

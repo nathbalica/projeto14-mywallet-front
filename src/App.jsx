@@ -5,6 +5,7 @@ import SignInPage from "./pages/SignInPage"
 import SignUpPage from "./pages/SignUpPage"
 import TransactionsPage from "./pages/TransactionPage"
 import { AuthContextProvider } from "./contexts/AuthContext"
+import EditTransactionPage from "./pages/EditTransactionPage"
 
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/cadastro" element={<SignUpPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/nova-transacao/:tipo" element={<TransactionsPage />} />
+            <Route path="/editar-transacao/:tipo" element={<EditTransactionPage />} />
           </Routes>
         </BrowserRouter>
       </PagesContainer>

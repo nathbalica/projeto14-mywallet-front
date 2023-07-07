@@ -36,6 +36,7 @@ export default function SignInPage() {
       <form onSubmit={loginUser}>
         <MyWalletLogo />
         <input
+        data-test="email"
           placeholder="E-mail"
           type="email"
           name="email"
@@ -44,6 +45,7 @@ export default function SignInPage() {
           autoComplete="username"
         />
         <input
+        data-test="password"
           placeholder="Senha"
           minLength={3}
           type="password"
@@ -53,7 +55,7 @@ export default function SignInPage() {
           onChange={handleForm}
           
         />
-        <button type="submit">Entrar</button>
+        <button type="submit" data-test="sign-in-submit">Entrar</button>
       </form>
 
       <Link to="/cadastro">

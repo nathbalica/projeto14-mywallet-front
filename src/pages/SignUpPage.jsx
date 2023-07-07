@@ -10,7 +10,6 @@ import useAuth from "../hooks/auth";
 
 export default function SignUpPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "", confirmPassword: "" })
-  // const [isLoading, setIsLoading] = useState(false);
 
 
   const navigate = useNavigate()
@@ -31,11 +30,11 @@ export default function SignUpPage() {
 
     const promise = apis.signUp(loginData)
     promise.then(res => {
-      // setIsLoading(false);
+
       navigate("/")
     });
     promise.catch(err => {
-      // setIsLoading(false);
+
       alert(err.response.data);
 
     })
@@ -47,24 +46,27 @@ export default function SignUpPage() {
       <form onSubmit={register}>
         <MyWalletLogo />
         <input
+          data-test="name"
           placeholder="Nome"
           type="text"
           name="name"
           onChange={handleForm}
           value={form.name}
           required
-        // disabled={isLoading}
+
         />
         <input
+          data-test="email"
           placeholder="E-mail"
           type="email"
           name="email"
           onChange={handleForm}
           value={form.email}
           required
-        // disabled={isLoading}
+
         />
         <input
+          data-test="password"
           placeholder="Senha"
           type="password"
           autoComplete="new-password"
@@ -72,9 +74,10 @@ export default function SignUpPage() {
           onChange={handleForm}
           value={form.password}
           required
-        // disabled={isLoading}
+
         />
         <input
+          data-test="conf-password"
           placeholder="Confirme a senha"
           type="password"
           autoComplete="new-password"
@@ -82,9 +85,8 @@ export default function SignUpPage() {
           onChange={handleForm}
           value={form.confirmPassword}
           required
-        // disabled={isLoading}
         />
-        <button type="submit">
+        <button type="submit" data-test="sign-up-submit">
           Cadastrar
         </button>
       </form>
