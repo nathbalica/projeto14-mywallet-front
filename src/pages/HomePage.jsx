@@ -13,8 +13,12 @@ export default function HomePage() {
   const { userAuth, login } = useAuth();
   const navigate = useNavigate()
 
+  useEffect(() => {
+    if (!userAuth?.token) {
+      navigate("/");
+    }
+  }, []);
 
-  console.log(userAuth.token)
 
   function handleGetTransactions() {
     apis.getTransaction(userAuth.token)
@@ -31,7 +35,8 @@ export default function HomePage() {
     apis.logout(userAuth.token)
       .then(res => {
         localStorage.removeItem("userAuth");
-        login(null);
+        login(undefined);
+        // localStorage.clear()
         navigate("/")
       })
       .catch((err) => {
@@ -52,16 +57,9 @@ export default function HomePage() {
     }
   }
 
-  useEffect(() => {
-    handleGetTransactions()
-  }, [])
-
-  useEffect(() => {
-    if (!userAuth) {
-      navigate("/");
-    }
-  }, [userAuth, navigate]);
-
+  if (!userAuth) {
+    return null;
+  }
   if (transactions === null) {
     return <h1>Carregando...</h1>;
   }
