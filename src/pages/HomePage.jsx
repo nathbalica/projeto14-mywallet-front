@@ -12,7 +12,7 @@ export default function HomePage() {
   const [transactions, setTransactions] = useState(null)
   const { userAuth, login } = useAuth();
   const navigate = useNavigate()
-  const location = useLocation();
+
 
   console.log(userAuth.token)
 
@@ -60,13 +60,13 @@ export default function HomePage() {
     return <h1>Carregando...</h1>;
   }
 
-  const totalBalance = parseFloat(transactions.reduce((sum, transaction) => {
+  const totalBalance = transactions.reduce((sum, transaction) => {
     if (transaction.type === "profit") {
       return sum + transaction.value;
     } else {
       return sum - Math.abs(transaction.value);
     }
-  }, 0).toFixed(2));
+  }, 0);
 
   const balanceColor = totalBalance >= 0 ? "positivo" : "negativo";
 
@@ -104,6 +104,7 @@ export default function HomePage() {
                     {transaction.value.toLocaleString("pt-BR", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
+                      useGrouping: false,
                     })}
                   </Value>
                   <DeleteButton
@@ -120,9 +121,10 @@ export default function HomePage() {
           <article>
             <strong>Saldo</strong>
             <Value data-test="total-amount" color={balanceColor}>
-              {totalBalance.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL",
+            {totalBalance.toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+                useGrouping: false,
               })}
             </Value>
           </article>
