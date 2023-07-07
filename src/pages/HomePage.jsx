@@ -16,8 +16,10 @@ export default function HomePage() {
   useEffect(() => {
     if (!userAuth?.token) {
       navigate("/");
+    } else {
+      handleGetTransactions();
     }
-  }, []);
+  }, [userAuth?.token, navigate]);
 
 
   function handleGetTransactions() {
@@ -35,8 +37,7 @@ export default function HomePage() {
     apis.logout(userAuth.token)
       .then(res => {
         localStorage.removeItem("userAuth");
-        login(undefined);
-        // localStorage.clear()
+        login(null);
         navigate("/")
       })
       .catch((err) => {
@@ -56,6 +57,10 @@ export default function HomePage() {
         });
     }
   }
+
+  // useEffect(() => {
+  //   handleGetTransactions();
+  // }, []);
 
   if (!userAuth) {
     return null;
@@ -125,7 +130,7 @@ export default function HomePage() {
           <article>
             <strong>Saldo</strong>
             <Value data-test="total-amount" color={balanceColor}>
-            {totalBalance.toLocaleString("pt-BR", {
+              {totalBalance.toLocaleString("pt-BR", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
                 useGrouping: false,
