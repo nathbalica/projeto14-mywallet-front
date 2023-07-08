@@ -95,7 +95,7 @@ export default function HomePage() {
                 <div>
                   <span>{dayjs(transaction.date).format('DD/MM')}</span>
                   <strong
-                    onClick={() => navigate(`/editar-registro/${transaction.type}`, { state: transaction })}
+                    onClick={() => navigate(`/editar-registro/${transaction.type  === "saida" ? "saida" : "entrada"}`, { state: transaction })}
                     data-test="registry-name"
                   >
                     {transaction.description}
