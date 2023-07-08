@@ -62,6 +62,8 @@ export default function HomePage() {
   //   handleGetTransactions();
   // }, []);
 
+
+
   if (!userAuth) {
     return null;
   }
@@ -70,7 +72,7 @@ export default function HomePage() {
   }
 
   const totalBalance = transactions.reduce((sum, transaction) => {
-    if (transaction.type === "profit") {
+    if (transaction.type === "entrada") {
       return sum + transaction.value;
     } else {
       return sum - Math.abs(transaction.value);
@@ -101,6 +103,7 @@ export default function HomePage() {
                     onClick={() => navigate(`/editar-transacao/${transaction.type}`, { state: transaction })}
                     data-test="registry-name"
                   >
+                      {console.log(transaction.type)}
                     {transaction.description}
                   </strong>
                 </div>
@@ -108,7 +111,7 @@ export default function HomePage() {
 
                   <Value
                     data-test="registry-amount"
-                    color={transaction.type === "profit" ? "positivo" : "negativo"}
+                    color={transaction.type === "entrada" ? "positivo" : "negativo"}
                   >
                     {transaction.value.toLocaleString("pt-BR", {
                       minimumFractionDigits: 2,

@@ -33,7 +33,7 @@ export default function EditTransactionPage() {
 
     return (
         <TransactionsContainer>
-            <h1>Editar {tipo === 'profit' ? 'Entrada' : 'Saída'}</h1>
+            <h1>Editar {tipo === 'entrada' ? 'Entrada' : 'Saída'}</h1>
             <form onSubmit={handleUpdateTransaction}>
                 <input
                     data-test="registry-amount-input"
@@ -56,7 +56,7 @@ export default function EditTransactionPage() {
                     data-test="registry-save"
                     type="submit"
                 >
-                    Atualizar {tipo === 'profit' ? 'Entrada' : 'Saída'}
+                    Atualizar {tipo === 'entrada' ? 'Entrada' : 'Saída'}
                 </button>
             </form>
         </TransactionsContainer>
