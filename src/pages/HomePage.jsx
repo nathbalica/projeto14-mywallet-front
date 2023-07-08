@@ -70,7 +70,7 @@ export default function HomePage() {
     if (transaction.type === "entrada") {
       return sum + transaction.value;
     } else {
-      return sum - Math.abs(transaction.value);
+      return sum - transaction.value;
     }
   }, 0);
 
@@ -127,7 +127,7 @@ export default function HomePage() {
           <article>
             <strong>Saldo</strong>
             <Value data-test="total-amount" color={balanceColor}>
-              {totalBalance.toLocaleString("pt-BR", {
+              {Math.abs(totalBalance).toLocaleString("pt-BR", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
                 useGrouping: false,
