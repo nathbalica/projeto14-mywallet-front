@@ -26,7 +26,6 @@ export default function HomePage() {
     apis.getTransaction(userAuth.token)
       .then(res => {
         setTransactions(res.data)
-        console.log(res.data)
       })
       .catch(error => {
         console.log(error.response);
@@ -57,10 +56,6 @@ export default function HomePage() {
         });
     }
   }
-
-  // useEffect(() => {
-  //   handleGetTransactions();
-  // }, []);
 
 
 
@@ -100,10 +95,9 @@ export default function HomePage() {
                 <div>
                   <span>{dayjs(transaction.date).format('DD/MM')}</span>
                   <strong
-                    onClick={() => navigate(`/editar-registro/${transaction.type}/${transaction._id}`, { state: transaction })}
+                    onClick={() => navigate(`/editar-registro/${transaction.type}`, { state: transaction })}
                     data-test="registry-name"
                   >
-                      {console.log(transaction.type)}
                     {transaction.description}
                   </strong>
                 </div>

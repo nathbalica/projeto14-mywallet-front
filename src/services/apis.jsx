@@ -44,10 +44,10 @@ function deleteTransaction(transactionId, token){
     return promise;
 }
 
-function updateTransaction(transactionId, token, body) {
+function updateTransaction(transactionId, token, body, type) {
     const config = configToken(token);
     const promise = axios.put(
-      `${import.meta.env.VITE_API_URL}/transactions/${transactionId}`,
+      `${import.meta.env.VITE_API_URL}/transactions/${type}/${transactionId}`,
       body,
       config
     );

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 export default function EditTransactionPage() {
-    const { tipo } = useParams();
+    // const { tipo } = useParams();
     const { state: transaction } = useLocation();
     const [form, setForm] = useState({ value: transaction.value, description: transaction.description });
     const { userAuth } = useAuth();
@@ -19,10 +19,10 @@ export default function EditTransactionPage() {
     function handleUpdateTransaction(e) {
         e.preventDefault();
 
-        const data = { ...form, type: tipo };
+        const data = { ...form};
 
 
-        apis.updateTransaction(transaction._id, userAuth.token, data)
+        apis.updateTransaction(transaction._id, userAuth.token, data, transaction.type)
             .then((res) => {
                 navigate("/home");
             })
@@ -33,7 +33,7 @@ export default function EditTransactionPage() {
 
     return (
         <TransactionsContainer>
-            <h1>Editar {tipo === 'entrada' ? 'Entrada' : 'Saída'}</h1>
+            <h1>Editar {transaction.type === 'entrada' ? 'Entrada' : 'Saída'}</h1>
             <form onSubmit={handleUpdateTransaction}>
                 <input
                     data-test="registry-amount-input"
@@ -56,7 +56,7 @@ export default function EditTransactionPage() {
                     data-test="registry-save"
                     type="submit"
                 >
-                    Atualizar {tipo === 'entrada' ? 'Entrada' : 'Saída'}
+                    Atualizar {transaction.type === 'entrada' ? 'Entrada' : 'Saída'}
                 </button>
             </form>
         </TransactionsContainer>

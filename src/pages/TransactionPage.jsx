@@ -19,7 +19,6 @@ export default function TransactionsPage() {
     e.preventDefault()
 
     const data = { ...form, type: tipo === "entrada" ? "entrada" : "saida" }
-    console.log(data)
 
     apis.createTransaction(data, userAuth.token)
       .then(res => {
