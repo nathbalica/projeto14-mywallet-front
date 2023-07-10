@@ -3,9 +3,10 @@ import apis from "../services/apis";
 import useAuth from "../hooks/auth";
 import { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { replace } from "lodash";
 
 export default function EditTransactionPage() {
-    // const { tipo } = useParams();
+    const { type } = useParams();
     const { state: transaction } = useLocation();
     const [form, setForm] = useState({ value: transaction.value, description: transaction.description });
     const { userAuth } = useAuth();
@@ -13,16 +14,31 @@ export default function EditTransactionPage() {
 
 
     function handleForm(e) {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    }
+        let { name, value } = e.target;
+      
+        if (name === "value") {
+          value = replace(value, ",", ".");
+
+          if (!isValidNumber(value)) {
+            return; // Ignora o valor inválido
+          }
+        }
+      
+        setForm({ ...form, [name]: value });
+      }
+
+      function isValidNumber(value) {
+        // Verifica se o valor é um número válido
+        return !isNaN(parseFloat(value)) && isFinite(value);
+      }
 
     function handleUpdateTransaction(e) {
         e.preventDefault();
 
-        const data = { ...form};
+        const data = { ...form, type: transaction.type};
 
 
-        apis.updateTransaction(transaction._id, userAuth.token, data, transaction.type)
+        apis.updateTransaction(transaction._id, userAuth.token, data)
             .then((res) => {
                 navigate("/home");
             })
@@ -33,12 +49,12 @@ export default function EditTransactionPage() {
 
     return (
         <TransactionsContainer>
-            <h1>Editar {transaction.type === 'entrada' ? 'Entrada' : 'Saída'}</h1>
+            <h1>Editar {type === 'profit' ? 'entrada' : 'saída'}</h1>
             <form onSubmit={handleUpdateTransaction}>
                 <input
                     data-test="registry-amount-input"
                     placeholder="Valor"
-                    type="number"
+                    type="text"
                     name="value"
                     value={form.value}
                     onChange={handleForm}
@@ -56,7 +72,7 @@ export default function EditTransactionPage() {
                     data-test="registry-save"
                     type="submit"
                 >
-                    Atualizar {transaction.type === 'entrada' ? 'Entrada' : 'Saída'}
+                    Atualizar {type === 'profit' ? 'entrada' : 'saída'}
                 </button>
             </form>
         </TransactionsContainer>

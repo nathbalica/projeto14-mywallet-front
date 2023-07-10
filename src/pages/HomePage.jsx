@@ -67,7 +67,7 @@ export default function HomePage() {
   }
 
   const totalBalance = transactions.reduce((sum, transaction) => {
-    if (transaction.type === "entrada") {
+    if (transaction.type === "profit") {
       return sum + transaction.value;
     } else {
       return sum - transaction.value;
@@ -95,7 +95,7 @@ export default function HomePage() {
                 <div>
                   <span>{dayjs(transaction.date).format('DD/MM')}</span>
                   <strong
-                    onClick={() => navigate(`/editar-registro/${transaction.type  === "saida" ? "saida" : "entrada"}`, { state: transaction })}
+                    onClick={() => navigate(`/editar-registro/${transaction.type  === "expense" ? "saida" : "entrada"}`, { state: transaction })}
                     data-test="registry-name"
                   >
                     {transaction.description}
@@ -105,7 +105,7 @@ export default function HomePage() {
 
                   <Value
                     data-test="registry-amount"
-                    color={transaction.type === "entrada" ? "positivo" : "negativo"}
+                    color={transaction.type === "profit" ? "positivo" : "negativo"}
                   >
                     {transaction.value.toLocaleString("pt-BR", {
                       minimumFractionDigits: 2,

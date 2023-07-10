@@ -4,6 +4,8 @@ import useAuth from "../hooks/auth";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { replace } from "lodash";
+
 
 export default function TransactionsPage() {
   const [form, setForm] = useState({ value: '', description: '' })
@@ -12,13 +14,21 @@ export default function TransactionsPage() {
   const navigate = useNavigate()
 
   function handleForm(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    let { name, value } = e.target;
+  
+    if (name === "value") {
+      value = replace(value, ",", ".");
+    }
+  
+    setForm({ ...form, [name]: value });
   }
+
+  console.log(tipo)
 
   function newTransaction(e) {
     e.preventDefault()
 
-    const data = { ...form, type: tipo === "entrada" ? "entrada" : "saida" }
+    const data = { ...form, type: tipo === "entrada" ? "profit" : "expense" }
 
     apis.createTransaction(data, userAuth.token)
       .then(res => {
@@ -45,12 +55,12 @@ export default function TransactionsPage() {
         <input
         data-test="registry-name-input"
           placeholder="Descrição"
-          type="text"
+          tipo="text"
           name="description"
           value={form.description}
           onChange={handleForm}
         />
-        <button type="submit" data-test="registry-save">Salvar {tipo === 'entrada' ? 'Entrada' : 'Saída'}</button>
+        <button tipo="submit" data-test="registry-save">Salvar {tipo === 'entrada' ? 'Entrada' : 'Saída'}</button>
       </form>
     </TransactionsContainer>
   )
