@@ -18,7 +18,7 @@ export default function App() {
             <Route path="/" element={<SignInPage />} />
             <Route path="/cadastro" element={<SignUpPage />} />
             <Route path="/home" element={<HomePage />} />
-            <Route path="/nova-transacao/:tipo" element={<TransactionsPage />} />
+            <Route path="/nova-transacao/:type" element={<TransactionsPage />} />
             <Route path="/editar-registro/:type/:id" element={<EditTransactionPage />} />
             {/* <Route path="/editar-registro/:tipo/:id" element={<EditTransactionPage />} /> */}
           </Routes>

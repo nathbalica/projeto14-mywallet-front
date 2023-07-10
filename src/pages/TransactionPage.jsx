@@ -13,6 +13,8 @@ export default function TransactionsPage() {
   const { userAuth } = useAuth();
   const navigate = useNavigate()
 
+  console.log(type)
+
   function handleForm(e) {
     let { name, value } = e.target;
   
