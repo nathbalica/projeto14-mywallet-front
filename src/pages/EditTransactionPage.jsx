@@ -15,23 +15,16 @@ export default function EditTransactionPage() {
 
 
     function handleForm(e) {
-        let { name, value } = e.target;
+        const { name, value } = e.target;
       
         if (name === "value") {
-          value = replace(value, ",", ".");
-
-          if (!isValidNumber(value)) {
-            return; // Ignora o valor inválido
-          }
+          const cleanedValue = replace(value, ",", ".");
+          setForm({ ...form, [name]: cleanedValue });
+        } else {
+          setForm({ ...form, [name]: value });
         }
-      
-        setForm({ ...form, [name]: value });
       }
 
-      function isValidNumber(value) {
-        // Verifica se o valor é um número válido
-        return !isNaN(parseFloat(value)) && isFinite(value);
-      }
 
     function handleUpdateTransaction(e) {
         e.preventDefault();
