@@ -9,7 +9,7 @@ import { replace } from "lodash";
 
 export default function TransactionsPage() {
   const [form, setForm] = useState({ value: '', description: '' })
-  const { tipo } = useParams();
+  const { type } = useParams();
   const { userAuth } = useAuth();
   const navigate = useNavigate()
 
@@ -23,12 +23,11 @@ export default function TransactionsPage() {
     setForm({ ...form, [name]: value });
   }
 
-  console.log(tipo)
 
   function newTransaction(e) {
     e.preventDefault()
 
-    const data = { ...form, type: tipo === "entrada" ? "profit" : "expense" }
+    const data = { ...form, type: type === "entrada" ? "profit" : "expense" }
 
     apis.createTransaction(data, userAuth.token)
       .then(res => {
@@ -42,7 +41,7 @@ export default function TransactionsPage() {
   }
   return (
     <TransactionsContainer>
-      <h1>Nova {tipo === 'entrada' ? 'Entrada' : 'Saída'}</h1>
+      <h1>Nova {type === 'entrada' ? 'Entrada' : 'Saída'}</h1>
       <form onSubmit={newTransaction}>
         <input
         data-test="registry-amount-input"
@@ -60,7 +59,7 @@ export default function TransactionsPage() {
           value={form.description}
           onChange={handleForm}
         />
-        <button tipo="submit" data-test="registry-save">Salvar {tipo === 'entrada' ? 'Entrada' : 'Saída'}</button>
+        <button tipo="submit" data-test="registry-save">Salvar {type === 'entrada' ? 'Entrada' : 'Saída'}</button>
       </form>
     </TransactionsContainer>
   )

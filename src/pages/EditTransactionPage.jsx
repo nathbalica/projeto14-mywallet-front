@@ -6,12 +6,12 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { replace } from "lodash";
 
 export default function EditTransactionPage() {
-    const { tipo } = useParams();
+    const { type } = useParams();
     const { state: transaction } = useLocation();
     const [form, setForm] = useState({ value: transaction.value, description: transaction.description });
     const { userAuth } = useAuth();
     const navigate = useNavigate();
-    const textUpdate = tipo === "entrada" ? "Entrada" : "Saída"
+    const textUpdate = type === "entrada" ? "Entrada" : "Saída"
 
 
     function handleForm(e) {
