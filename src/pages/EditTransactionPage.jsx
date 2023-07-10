@@ -6,11 +6,12 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { replace } from "lodash";
 
 export default function EditTransactionPage() {
-    const { type } = useParams();
+    const { tipo } = useParams();
     const { state: transaction } = useLocation();
     const [form, setForm] = useState({ value: transaction.value, description: transaction.description });
     const { userAuth } = useAuth();
     const navigate = useNavigate();
+    const textUpdate = tipo === "entrada" ? "Entrada" : "Saída"
 
 
     function handleForm(e) {
@@ -49,7 +50,7 @@ export default function EditTransactionPage() {
 
     return (
         <TransactionsContainer>
-            <h1>Editar {type === 'profit' ? 'entrada' : 'saída'}</h1>
+            <h1>Editar {textUpdate}</h1>
             <form onSubmit={handleUpdateTransaction}>
                 <input
                     data-test="registry-amount-input"
@@ -72,7 +73,7 @@ export default function EditTransactionPage() {
                     data-test="registry-save"
                     type="submit"
                 >
-                    Atualizar {type === 'profit' ? 'entrada' : 'saída'}
+                    Atualizar {textUpdate}
                 </button>
             </form>
         </TransactionsContainer>
